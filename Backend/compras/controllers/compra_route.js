@@ -47,6 +47,21 @@ exports.findCompraByIDCliente = function (req, res) {
   });
 };
 
+//GET - Devuelve una compra con el ID y el ID del cliente especificados
+exports.findCompraByIDAndClienteID = function (req, res) {
+  console.log("buscando compra por ID y ID del cliente");
+  var compraID = req.params.id;
+  var clienteID = req.params.idCliente;
+  Compra.find({ _id: compraID, idCliente: clienteID }, function (err, compra) {
+    if (err) return res.status(500, err.message);
+
+    console.log('GET /compra/idCompra/' + compraID + '/idCliente/' + clienteID);
+    console.log(compra);
+    res.status(200).jsonp(compra);
+  });
+};
+
+
 exports.findCompraByIDClienteYNombre = function (req, res) {
   var idCliente = req.params.idCliente;
   var nombre = req.params.nombre;

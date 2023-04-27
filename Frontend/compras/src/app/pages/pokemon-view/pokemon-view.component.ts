@@ -61,6 +61,7 @@ checkUserRole(id: string, allowedRoles: string[]): Observable<boolean> {
 
 
 getcompra(id: string){
+  
   this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
     if (hasAccess) {
       this.CompraService.getCompraByIDCliente(id).subscribe((compras: any)=> this.compras = compras);
@@ -71,14 +72,52 @@ getcompra(id: string){
 }
 
 getcomprabyID(id: string ,id_compra : string){
+  console.log(id_compra);
+  console.log(id);
+  this.showlistacompra=false;
+  this.showpokemonflag=false;
   this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
     if (hasAccess) {
-      this.CompraService.getCompraByID(id_compra).subscribe((compras: any)=> this.compras = compras);
-      this.showlistacompra=true;
+      this.CompraService.getCompraByIDAndClienteID(id_compra,id).subscribe((compras: any)=> this.compras = compras);
+      
+        this.showlistacompra=true;
+        this.showpokemonflag=false;
+      
+      
+  
+      
+    }
+    else{
+      this.showlistacompra=false;
       this.showpokemonflag=false;
     }
   });
 }
+
+
+/* getcomprabyID(id: string ,id_compra : string){
+  console.log(id_compra);
+  console.log(id);
+  this.showlistacompra=false;
+  this.showpokemonflag=false;
+  this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
+    if (hasAccess) {
+      this.CompraService.getCompraByID(id_compra).subscribe((compras: any)=> this.compras = compras);
+      if(this.compras[0].idCliente===id){
+        console.log(this.compras[0]._id);
+        console.log(id);
+        this.showlistacompra=true;
+        this.showpokemonflag=false;
+      }else{
+        this.showlistacompra=false;
+        this.showpokemonflag=false;
+      }
+      
+  
+      
+    }
+  });
+} */
 
 getcomprabynombre(id: string, nombre: string){
   this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
@@ -91,9 +130,9 @@ getcomprabynombre(id: string, nombre: string){
 }
 
 
-eliminarcompra(id_cliente:string,id:string, id_pokemon : string , cantidad : number){
-  this.checkUserRole(id_cliente, ['Cliente']).subscribe(hasAccess => {
-    if (hasAccess) {
+eliminarcompra(id_usuario:string, id_cliente:string,id:string, id_pokemon : string , cantidad : number){
+  this.checkUserRole(id_usuario, ['Cliente']).subscribe(hasAccess => {
+    if (hasAccess && id_cliente==id_usuario) {
       this.showlistacompra=false;
       this.CompraService.putsumarCantidad(id_pokemon,cantidad).subscribe(response => {
         if (response.status == 200) {
@@ -117,31 +156,6 @@ eliminarcompra(id_cliente:string,id:string, id_pokemon : string , cantidad : num
     }
   });
 } 
-/* 
-eliminarcompra(id:string, id_pokemon : string , cantidad : number){
-  this.showlistacompra=false;
-  this.CompraService.putsumarCantidad(id_pokemon,cantidad).subscribe(response => {
-    if (response.status == 200) {
-      console.log("dadded true")
-      this.rstatus.emit(true);   
-    } else {
-      console.log("added true")
-      this.rstatus.emit(false);  
-    }
-  });
-  this.CompraService.deleteCompra(id).subscribe(response => {
-    if (response.status == 200) {
-      this.bien2();
-      console.log("dadded true")
-      this.rstatus.emit(true);
-      
-    } else {
-      console.log("added true")
-      this.rstatus.emit(false);
-      
-    }
-  });
-} */
 
 
 
@@ -150,12 +164,23 @@ eliminarcompra(id:string, id_pokemon : string , cantidad : number){
 
 
 getByName(_nombre: string) { //para pokemons
+  if(_nombre.length==0){
+    
+    this.pokemons=[];
+  }else{
   this.CompraService.getPokemonByName(_nombre).subscribe((pokemons: any)=>  this.pokemons = pokemons ); 
+}
 }
 
 getByID(id: string) { //para pokemons
- this.CompraService.getPokemonByID(id).subscribe((pokemons: any)=>  this.pokemons = pokemons);
-}
+  if(id.length==0){
+    
+    this.pokemons=[];
+  }else{
+    this.CompraService.getPokemonByID(id).subscribe((pokemons: any)=>  this.pokemons = pokemons ); 
+
+  }
+  }
 
 
  getBoolean(value: string){
@@ -186,8 +211,8 @@ activarShowpokemons(id: string) {
 activarShowpokemonsnombre(id: string,nombre : string) { 
   this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
     if (hasAccess) {
-      this.getByName(nombre);
-      this.showpokemonflag=true;
+      this.showlistacompra=false;
+        this.showpokemonflag=true;
       console.log("you have access");
     } else {
       console.log("you better get out of here");
@@ -195,12 +220,13 @@ activarShowpokemonsnombre(id: string,nombre : string) {
   });
 }
 
-activarShowpokemonsID(id: string, idpokemon : string) { 
+activarShowpokemonsID(id: string, idpokemon : string) {
+  
   this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
     if (hasAccess) {
       this.getByID(idpokemon);
-      this.showpokemonflag=true;
       this.showlistacompra=false;
+        this.showpokemonflag=true;
       console.log("you have access");
     } else {
       console.log("you better get out of here");
@@ -268,17 +294,29 @@ addCompra(id:string ,idArticulo: string, idCliente: string, cantidad: number, no
 }
 
 
-modify(compra: Compra) {
+modify(id_usuario:string, compra: Compra) {
   this.compraSeleccionada = compra;
-  this.showmodifyflag = true;
-  this.showlistacompra=false;
-  this.showcompraform=false;
-  this.showpokemonflag=false
+  this.checkUserRole(id_usuario, ['Cliente']).subscribe(hasAccess => {
+    if (hasAccess && id_usuario==this.compraSeleccionada.idCliente) {
+      this.showmodifyflag = true;
+      this.showlistacompra=false;
+      this.showcompraform=false;
+      this.showpokemonflag=false
+    }
+    else{
+      this._snackBar.open("Esta no es tu compra",'',{
+        duration:4000,
+        horizontalPosition:'center',
+      })
+    }
+  });
 }
-modifyCompra(_id: string, idArticulo: string, idCliente: string, cantidad: number, nombre: string, direccionEnvio: string) {
+
+
+modifyCompra(id_usuario:string, _id: string, idArticulo: string, idCliente: string, cantidad: number, nombre: string, direccionEnvio: string) {
   this.showmodifyflag = false;
   this.checkUserRole(idCliente, ['Cliente']).subscribe(hasAccess => {
-    if (hasAccess) {
+    if (hasAccess && id_usuario==idCliente) {
       this.CompraService.putCompra(_id, idArticulo, idCliente, cantidad, nombre, direccionEnvio)
       .subscribe(response => {
         if (response.status == 200) {
@@ -292,7 +330,10 @@ modifyCompra(_id: string, idArticulo: string, idCliente: string, cantidad: numbe
       });
       console.log("you have access");
     } else {
-      console.log("you better get out of here");
+      this._snackBar.open("Esta no es tu compra",'',{
+        duration:4000,
+        horizontalPosition:'center',
+      })
     }
   });
 }

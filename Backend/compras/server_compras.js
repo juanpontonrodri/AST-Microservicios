@@ -88,6 +88,9 @@ router.route('/compra/idCliente/:idCliente')
 router.route('/compra/idCliente/:idCliente/nombre/:nombre')
     .get(compraRoute.findCompraByIDClienteYNombre);
 
+router.route('/compra/idCompra/:id/idCliente/:idCliente')
+    .get(compraRoute.findCompraByIDAndClienteID);
+
 
 // consultar cosas de articulos pokemon 
 router.route('/pokemon')

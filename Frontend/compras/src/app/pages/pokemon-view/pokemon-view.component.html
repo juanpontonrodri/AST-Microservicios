@@ -59,7 +59,7 @@
 </div>
 <div *ngIf="showcompraform">
     <input #compraInput1 type="text" class="form-control has-background-light" [value]="idPokemon" readonly>
-    <input #compraInput2 type="text" class="form-control has-background-light" [value]="idCliente" readonly >
+    <input #compraInput2 type="text" class="form-control has-background-light" [value]="userInput1.value" readonly >
     <input #compraInput3 type="number" class="form-control has-background-light" placeholder="Cantidad a comprar"> 
     <input #compraInput4 type="text" class="form-control has-background-light" placeholder="Nombre del comprador">
     <input #compraInput5 type="text" class="form-control has-background-light" placeholder="Dirección de envío">
@@ -74,10 +74,10 @@
             ID de Compra: {{item._id}} <br> ID del artículo: {{item.idArticulo}} <br> ID del cliente: {{item.idCliente}} <br> Cantidad: {{item.cantidad}} <br> Nombre: {{item.nombre}} <br> Dirección de envío: {{item.direccionEnvio}}
             </div>
         </ng-template>
-        <button class="btn btn-primary btn-rounded-corners m-2" (click)="eliminarcompra(item.idCliente,item._id,item.idArticulo,item.cantidad)" >
+        <button class="btn btn-primary btn-rounded-corners m-2" (click)="eliminarcompra(userInput1.value,item.idCliente,item._id,item.idArticulo,item.cantidad)" >
             Eliminar Compra
         </button>
-        <button class="btn btn-primary btn-rounded-corners m-2"(click)="modify(item)" >
+        <button class="btn btn-primary btn-rounded-corners m-2"(click)="modify(userInput1.value,item)" >
             Modificar Compra
         </button>
 
@@ -105,5 +105,5 @@
     <br>
     <button class="btn m-2" (click)="cancelform()"> Cancelar</button>
     <button class="btn btn-primary m-2"
-        (click)="modifyCompra(compraSeleccionada._id, compraSeleccionada.idArticulo, compraSeleccionada.idCliente, compraSeleccionada.cantidad, compraInput1.value, compraInput2.value)">Modify</button>
+        (click)="modifyCompra(userInput1.value,compraSeleccionada._id, compraSeleccionada.idArticulo, compraSeleccionada.idCliente, compraSeleccionada.cantidad, compraInput1.value, compraInput2.value)">Modify</button>
 </div>

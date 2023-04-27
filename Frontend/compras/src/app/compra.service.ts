@@ -26,6 +26,9 @@ export class CompraService {
     return this.webService.get(`api/compra/id/${_id}`);
   }
 
+  getCompraByIDAndClienteID(_id: string, idCliente: string) {
+    return this.webService.get(`api/compra/idCompra/${_id}/idCliente/${idCliente}`)}
+
   getCompraByIDCliente(idCliente: string) {
     return this.webService.get(`api/compra/idCliente/${idCliente}`);
   }

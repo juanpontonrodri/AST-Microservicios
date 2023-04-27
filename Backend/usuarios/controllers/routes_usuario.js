@@ -5,13 +5,19 @@ const ObjectId = require('mongodb').ObjectId;
 
 //GET - Return all usuarios in the DB
 exports.findAllusuarios = function (req, res) {
-    Usuario.find(function (err, usuario) {
-    if (err) res.send(500, err.message);
+  Usuario.find(function (err, usuarios) {
+    if (err) return res.status(500).send({ message: err.message });
 
-    console.log("GET /pokemon");
-    res.status(200).jsonp(usuario);
+    console.log("GET /usuario");
+    
+    if (usuarios.length === 0) {
+      return res.status(404).send({ message: "No se encontraron usuarios" });
+    }
+
+    res.status(200).jsonp(usuarios);
   });
 };
+
 
 //POST - Insert new usuario in the DB
 exports.addusuario = function (req, res) {
@@ -28,46 +34,61 @@ return res.status(200).send({result: usuarioID });
 };
 
 //GET Return usuario by rol
-exports.findByrol = function (req, res) {
+exports.findByrol = function(req, res) {
   console.log("request!");
-    var rol = req.params.rol;
-    Usuario.find({ rol: rol }, (err, usuario) => {
-      if (err) return res.status(500, err.message);
-      console.log('GET /usuario/rol/' + req.params.usuario);
-      console.log(req.body);
-      res.status(200).jsonp(usuario);
-    })
-  }
-//GET usuario by id 
-exports.findByid = function(req, res) {
-  var id = req.params.id;
-  var objectId = ObjectId(id);
-  console.log(id);
-  console.log(objectId);
-	Usuario.find({ _id:objectId }, function(err, usuario) {
-    const usuariorol = usuario[0].rol;
-    console.log(usuariorol);
-    if(err) return res.send(500, err.message);
+  var rol = req.params.rol;
+  Usuario.find({ rol: rol }, (err, usuarios) => {
+    if (err) return res.status(500).send({ message: err.message });
 
-    console.log('GET /usuario/id/' + req.params.id);
-    
-		res.status(200).jsonp(usuariorol);
-	});
+    console.log('GET /usuario/rol/' + req.params.rol);
+    console.log(req.body);
+
+    if (usuarios.length === 0) {
+      return res.status(404).send({ message: "No se encontraron usuarios" });
+    }
+
+    res.status(200).jsonp(usuarios);
+  });
 };
 
+//GET usuario by id 
+Usuario.find({ _id:objectId }, function(err, usuarios) {
+  if (err) return res.send(500, err.message);
+
+  if (usuarios.length === 0) {
+    return res.status(404).send("Usuario no encontrado");
+  }
+
+  const usuariorol = usuarios[0].rol;
+  console.log(usuariorol);
+
+  console.log('GET /usuario/id/' + req.params.id);
+  
+  res.status(200).jsonp(usuariorol);
+});
+
+
   //DELETE usuario por id 
-  exports.deleteUsuario = async function(req,res) {
+  exports.deleteUsuario = async function(req, res) {
     try {
-    let id = req.params.id;
-    let result = await Usuario.deleteOne({_id:id})
-    if(result) {
-    console.log('DELETE /pokemon/' + req.params.id);
-    return res.status(200).send({result: "Usuario has been deleted"});
+      let id = req.params.id;
+      let usuario = await Usuario.findById(id);
+  
+      if (!usuario) {
+        return res.status(404).send({ message: "Usuario no encontrado" });
+      }
+  
+      let result = await Usuario.deleteOne({ _id: id });
+  
+      if (result.deletedCount) {
+        console.log("DELETE /usuario/" + req.params.id);
+        return res.status(200).send({ message: "Usuario ha sido eliminado" });
+      }
+  
+      return res.status(200).send({ message: "No se pudo eliminar el usuario" });
+    } catch (error) {
+      return res.status(500).send({ message: error.message });
     }
-    return res.status(200).send({result: "Not able to delete"})
-    }catch(error) {
-      return res.status(500).send({message: error.message})
-    }
-    
-    }
+  };
+  
     
