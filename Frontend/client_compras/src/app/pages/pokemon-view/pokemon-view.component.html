@@ -1,0 +1,109 @@
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <img src="assets/pikachu.ico" width="30" height="30" class="d-inline-block align-top" alt="">
+        Tienda Pokémon
+    </a>
+</nav>
+    
+<div class="container mt-3">
+    
+    <hr>
+    <div class="row">
+      <div class="col text-center">
+        
+        Obligatorio: <input  #userInput1 type="text" class=" has-background-light" placeholder="ID del usuario"><br>
+        <button class="btn btn-primary btn-rounded-corners m-2" (click)="activarShowpokemons(userInput1.value)">Mostrar todos los Pokémon en venta</button>
+        <button class="btn btn-primary btn-rounded-corners m-2" (click)="getcompra(userInput1.value)">Mostrar lista de compras </button>
+        <br><br><br>
+        <div class="grid-container">
+
+                <div class="grid-item">
+                    <input  #userInput2 type="text" class=" has-background-light" placeholder="Pokémon ID">
+                    <button class="btn btn-primary btn-rounded-corners m-2" (click)="activarShowpokemonsID(userInput1.value,userInput2.value)">Mostrar Pokémon por ID </button>
+                </div>
+                <div class="grid-item">
+                    <input  #userInput3 type="text" class=" has-background-light" placeholder="Nombre del Pokémon">
+                    <button class="btn btn-primary btn-rounded-corners m-2" (click)="activarShowpokemonsnombre(userInput1.value,userInput3.value)">Mostrar Pokémon por nombre </button>
+                </div> 
+                <div class="grid-item">
+                    <input  #userInput4 type="text" class=" has-background-light" placeholder="ID compra">
+                    <button class="btn btn-primary btn-rounded-corners m-2" (click)="getcomprabyID(userInput1.value,userInput4.value)">Mostrar compra con ID </button> 
+                </div>
+                <div class="grid-item">
+                    <input  #userInput5 type="text" class=" has-background-light" placeholder="Nombre comprador">
+                    <button class="btn btn-primary btn-rounded-corners m-2" (click)="getcomprabynombre(userInput1.value,userInput5.value)">Mostrar compra con nombre</button> 
+                </div>
+    </div>
+    </div>
+    </div>
+    
+    <hr>
+  
+  </div>
+  
+
+<div *ngIf="showpokemonflag" class="grid-container">
+    <p class="black-text " *ngFor="let item of pokemons">
+        <ng-template [ngIf]="item.legendario">
+            <div class="legendary grid-item">
+                ID:{{item._id}}  <br> <img [src]="url1 + item.numero.toString().padStart(3, '0') + url2" width="300" height="300"> <br> Nombre: {{item.nombre}}<br> Número:{{item.numero}}<br> Generación:{{item.generacion}} <br> Región:{{item.region}}<br> Tipo:{{item.tipo}} <br> ¿Evoluciona?:{{item.evolucion}}<br> ¿Legendario?:{{item.legendario}} <br>Cantidad:{{item.cantidad}} <br> Precio:{{item.precio}}$
+                <br> <button class="btn btn-primary btn-rounded-corners add-button m-2" (click)="showcompraformulario(userInput1.value,item._id, item.cantidad,item)" >  Comprar Pokémon</button>
+            </div>
+        </ng-template>
+        <ng-template [ngIf]="!item.legendario">
+            <div class="grid-item">
+                ID:{{item._id}}  <br> <img [src]="url1 + item.numero.toString().padStart(3, '0') + url2" width="300" height="300"><br> Nombre: {{item.nombre}} <br> Número:{{item.numero}}<br> Generación:{{item.generacion}} <br> Región:{{item.region}}<br> Tipo:{{item.tipo}} <br> ¿Evoluciona?:{{item.evolucion}}<br> ¿Legendario?:{{item.legendario}} <br>Cantidad:{{item.cantidad}} <br> Precio:{{item.precio}}$
+                <br> <button class="btn btn-primary btn-rounded-corners add-button m-2"(click)="showcompraformulario(userInput1.value,item._id, item.cantidad,item)" >Comprar Pokémon</button>
+            </div>
+        </ng-template>
+</div>
+<div *ngIf="showcompraform">
+    <input #compraInput1 type="text" class="form-control has-background-light" [value]="idPokemon" readonly>
+    <input #compraInput2 type="text" class="form-control has-background-light" [value]="idCliente" readonly >
+    <input #compraInput3 type="number" class="form-control has-background-light" placeholder="Cantidad a comprar"> 
+    <input #compraInput4 type="text" class="form-control has-background-light" placeholder="Nombre del comprador">
+    <input #compraInput5 type="text" class="form-control has-background-light" placeholder="Dirección de envío">
+
+    <button class="btn " style="border: 2px solid black; border-radius: 5px; padding: 5px 10px; background-color: white; color: black;" (click)="cancelform()"> Cancelar</button>
+    <button class="btn btn-primary m-2"  (click)="addCompra(userInput1.value,compraInput1.value, compraInput2.value, compraInput3.valueAsNumber, compraInput4.value, compraInput5.value)">Comprar</button>
+</div>
+<div *ngIf="showlistacompra"class="grid-container">
+    <p class="black-text " *ngFor="let item of compras">
+        <ng-template [ngIf]="item">
+            <div class="grid-item">
+            ID de Compra: {{item._id}} <br> ID del artículo: {{item.idArticulo}} <br> ID del cliente: {{item.idCliente}} <br> Cantidad: {{item.cantidad}} <br> Nombre: {{item.nombre}} <br> Dirección de envío: {{item.direccionEnvio}}
+            </div>
+        </ng-template>
+        <button class="btn btn-primary btn-rounded-corners m-2" (click)="eliminarcompra(item._id,item.idArticulo,item.cantidad)" >
+            Eliminar Compra
+        </button>
+        <button class="btn btn-primary btn-rounded-corners m-2"(click)="modify(item)" >
+            Modificar Compra
+        </button>
+
+</div>
+
+<div *ngIf="showmodifyflag" class="grid-item">
+    <label>ID de Compra:</label>
+    <input [(ngModel)]="compraSeleccionada._id" name="nombre" type="text" readonly>
+    <br>
+    <label>ID del artículo:</label>
+    <input [(ngModel)]="compraSeleccionada.idArticulo" name="direccionEnvio" type="text" readonly>
+    <br>
+    <label>ID del cliente:</label>
+    <input [(ngModel)]="compraSeleccionada.idCliente" name="nombre" type="text" readonly>
+    <br>
+    <label>Cantidad:</label>
+    <input  [(ngModel)]="compraSeleccionada.cantidad" name="nombre" type="text" readonly>
+    <br>
+    <br>
+    <label>Nombre:</label>
+    <input #compraInput1 [(ngModel)]="compraSeleccionada.nombre" name="nombre" type="text" >
+    <br>
+    <label>Dirección de envío:</label>
+    <input #compraInput2 [(ngModel)]="compraSeleccionada.direccionEnvio" name="direccionEnvio" type="text">
+    <br>
+    <button class="btn m-2" (click)="cancelform()"> Cancelar</button>
+    <button class="btn btn-primary m-2"
+        (click)="modifyCompra(compraSeleccionada._id, compraSeleccionada.idArticulo, compraSeleccionada.idCliente, compraSeleccionada.cantidad, compraInput1.value, compraInput2.value)">Modify</button>
+</div>
