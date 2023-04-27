@@ -1,0 +1,108 @@
+<div *ngIf="!showmodifyflag" class="grid-container">
+    <p class="black-text " *ngFor="let item of pokemons">
+        <ng-template [ngIf]="item.legendario">
+            <div class="legendary grid-item">
+                ID:{{item._id}}  <br> <img [src]="url1 + item.numero.toString().padStart(3, '0') + url2" width="300" height="300"> <br> Nombre:{{item.nombre}}   <br> Número:{{item.numero}}<br> Generación:{{item.generacion}} <br> Región:{{item.region}}<br> Tipo:{{item.tipo}} <br> ¿Evoluciona?:{{item.evolucion}}<br> ¿Legendario?:{{item.legendario}} <br>Cantidad:{{item.cantidad}} <br> Precio:{{item.precio}}$
+            </div>
+        </ng-template>
+        <ng-template [ngIf]="!item.legendario">
+            <div class="grid-item">
+                ID:{{item._id}}  <br> <img [src]="url1 + item.numero.toString().padStart(3, '0') + url2" width="300" height="300"> <br> Nombre:{{item.nombre}}   <br> Número:{{item.numero}}<br> Generación:{{item.generacion}} <br> Región:{{item.region}}<br> Tipo:{{item.tipo}} <br> ¿Evoluciona?:{{item.evolucion}}<br> ¿Legendario?:{{item.legendario}} <br>Cantidad:{{item.cantidad}} <br> Precio:{{item.precio}}$
+
+            </div>
+        </ng-template>
+        <button class="btn btn-primary btn-rounded-corners m-2" (click)="deletePokemon(item)">
+            Eliminar Pokémon
+        </button>
+        <button class="btn btn-primary btn-rounded-corners m-2" (click)="modify(item)">
+            Modificar Pokémon
+        </button>
+</div>
+
+
+
+<div *ngIf="showmodifyflag" class="grid-item">
+    <label>Nombre:</label>
+    <input #pokemonInput1 [(ngModel)]="pokemonSeleccionado.nombre" name="nombre" type="text"> <!--metemos disbaled dentro y para evitar sincronziacion metemos value en vez de ng model-->
+    <br>
+    <label>Numero:</label>
+    <input #pokemonInput2 [(ngModel)]="pokemonSeleccionado.numero" name="numero" type="number">
+    <br>
+    <label>Generacion:</label>
+    <select #pokemonInput3 [(ngModel)]="pokemonSeleccionado.generacion" class="form-control has-background-light">
+        <option value="">Seleccionar una generación</option>
+        <option value="1">Primera generación</option>
+        <option value="2">Segunda generación</option>
+        <option value="3">Tercera generación</option>
+        <option value="4">Cuarta generación</option>
+        <option value="5">Quinta generación</option>
+        <option value="6">Sexta generación</option>
+        <option value="7">Séptima generación</option>
+        <option value="8">Octava generación</option>
+    </select>
+    <br>
+    <label>Region:</label>
+    <select #pokemonInput4 [(ngModel)]="pokemonSeleccionado.region" type="text"
+        class="form-control has-background-light">
+        <option value="">Seleccionar una región</option>
+        <option value="Kanto">Kanto</option>
+        <option value="Johto">Johto</option>
+        <option value="Hoenn">Hoenn</option>
+        <option value="Sinnoh">Sinnoh</option>
+        <option value="Teselia">Teselia</option>
+        <option value="Kalos">Kalos</option>
+        <option value="Alola">Alola</option>
+        <option value="Galar">Galar</option>
+    </select>
+    <br>
+    <label>Tipo:</label>
+    <select #pokemonInput5 [(ngModel)]="pokemonSeleccionado.tipo" type="text" class="form-control has-background-light">
+        <option value="">Seleccionar el primer tipo Pokémon</option>
+        <option value="Acero">Acero</option>
+        <option value="Agua">Agua</option>
+        <option value="Bicho">Bicho</option>
+        <option value="Dragón">Dragón</option>
+        <option value="Eléctrico">Eléctrico</option>
+        <option value="Fantasma">Fantasma</option>
+        <option value="Fuego">Fuego</option>
+        <option value="Hada">Hada</option>
+        <option value="Hielo">Hielo</option>
+        <option value="Lucha">Lucha</option>
+        <option value="Normal">Normal</option>
+        <option value="Planta">Planta</option>
+        <option value="Psíquico">Psíquico</option>
+        <option value="Roca">Roca</option>
+        <option value="Siniestro">Siniestro</option>
+        <option value="Tierra">Tierra</option>
+        <option value="Veneno">Veneno</option>
+        <option value="Volador">Volador</option>
+    </select>
+    <br>
+    <label>Evolucion:</label>
+    <select #pokemonInput6 [(ngModel)]="pokemonSeleccionado.evolucion" type="text"
+        class="form-control has-background-light">
+        <option value="">¿Evoluciona el Pokémon?</option>
+        <option value="true">Sí</option>
+        <option value="false">No</option>
+    </select>
+    <br>
+    <label>Legendario:</label>
+    <select #pokemonInput7 [(ngModel)]="pokemonSeleccionado.legendario" type="text"
+        class="form-control has-background-light">
+        <option value="">¿Es legendario?</option>
+        <option value="true">Sí</option>
+        <option value="false">No</option>
+    </select>
+    <br>
+    <label>Cantidad:</label>
+    <input #pokemonInput8 [(ngModel)]="pokemonSeleccionado.cantidad" type="number"
+        class="form-control has-background-light" placeholder="Enter quantity">
+    <br>
+    <label>Precio:</label>
+    <input #pokemonInput9 [(ngModel)]="pokemonSeleccionado.precio" type="number"
+        class="form-control has-background-light" placeholder="Enter price">
+    <br>
+    <button class="btn m-2" (click)="cancelmodify()"> Cancelar</button>
+    <button class="btn btn-primary m-2"
+        (click)="modifyPokemon(pokemonSeleccionado._id,pokemonInput1.value, pokemonInput2.valueAsNumber, +pokemonInput3.value, pokemonInput4.value, pokemonInput5.value, getBoolean(pokemonInput6.value), getBoolean(pokemonInput7.value)!, pokemonInput8.valueAsNumber, pokemonInput9.valueAsNumber)">Modify</button>
+</div>

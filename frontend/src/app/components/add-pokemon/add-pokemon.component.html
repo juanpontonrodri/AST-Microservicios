@@ -1,0 +1,73 @@
+<button class="btn btn-primary btn-rounded-corners add-button m-2" (click)="showform()">Añadir Pokémon</button>
+<div *ngIf="showformflag">
+    <p>¡Debes introducir todos los campos!</p>
+    <input #pokemonInput1 type="text" class="form-control has-background-light" placeholder="Nombre del Pokémon">
+    <input #pokemonInput2 type="number" class="form-control has-background-light" placeholder="Número del Pokémon">
+
+    <select #pokemonInput3 class="form-control has-background-light">
+        <option value="">Seleccionar una generación</option>
+        <option value="1">Primera generación</option>
+        <option value="2">Segunda generación</option>
+        <option value="3">Tercera generación</option>
+        <option value="4">Cuarta generación</option>
+        <option value="5">Quinta generación</option>
+        <option value="6">Sexta generación</option>
+        <option value="7">Séptima generación</option>
+        <option value="8">Octava generación</option>
+    </select>
+
+    <select #pokemonInput4 type="text" class="form-control has-background-light">
+        <option value="">Seleccionar una región</option>
+        <option value="Kanto">Kanto</option>
+        <option value="Johto">Johto</option>
+        <option value="Hoenn">Hoenn</option>
+        <option value="Sinnoh">Sinnoh</option>
+        <option value="Teselia">Teselia</option>
+        <option value="Kalos">Kalos</option>
+        <option value="Alola">Alola</option>
+        <option value="Galar">Galar</option>
+    </select>
+
+
+    <select #pokemonInput5 type="text" class="form-control has-background-light">
+        <option value="">Seleccionar el primer tipo Pokémon</option>
+        <option value="Acero">Acero</option>
+        <option value="Agua">Agua</option>
+        <option value="Bicho">Bicho</option>
+        <option value="Dragón">Dragón</option>
+        <option value="Eléctrico">Eléctrico</option>
+        <option value="Fantasma">Fantasma</option>
+        <option value="Fuego">Fuego</option>
+        <option value="Hada">Hada</option>
+        <option value="Hielo">Hielo</option>
+        <option value="Lucha">Lucha</option>
+        <option value="Normal">Normal</option>
+        <option value="Planta">Planta</option>
+        <option value="Psíquico">Psíquico</option>
+        <option value="Roca">Roca</option>
+        <option value="Siniestro">Siniestro</option>
+        <option value="Tierra">Tierra</option>
+        <option value="Veneno">Veneno</option>
+        <option value="Volador">Volador</option>
+    </select>
+
+    <select #pokemonInput6 type="text" class="form-control has-background-light">
+        <option value="">¿Evoluciona el Pokémon?</option>
+        <option value="true">Sí</option>
+        <option value="false">No</option>
+    </select>
+    <select #pokemonInput7 type="text" class="form-control has-background-light">
+        <option value="">¿Es legendario?</option>
+        <option value="true">Sí</option>
+        <option value="false">No</option>
+    </select>
+    
+    <input #pokemonInput8 type="number" class="form-control has-background-light" placeholder="Enter quantity">
+    <input #pokemonInput9 type="number" class="form-control has-background-light" placeholder="Enter price">
+    <button class="btn " style="border: 2px solid black; border-radius: 5px; padding: 5px 10px; background-color: white; color: black;" (click)="cancelform()"> Cancelar</button>
+    <button class="btn btn-primary m-2"
+        (click)="addPokemon(pokemonInput1.value, pokemonInput2.valueAsNumber, +pokemonInput3.value, pokemonInput4.value, pokemonInput5.value, getBoolean(pokemonInput6.value), getBoolean(pokemonInput7.value)!, pokemonInput8.valueAsNumber, pokemonInput9.valueAsNumber)"
+        routerLink="/">Añadir</button>
+
+
+</div>

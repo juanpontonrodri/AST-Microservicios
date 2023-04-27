@@ -1,0 +1,20 @@
+.legendary {
+    border: 3px solid gold;
+    background-color: rgba(255, 215, 0, 0.2);
+    width: 100%; /* Ajusta el ancho al 100% del contenedor */
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%; /* Ajusta el ancho al 100% de la pantalla */
+}
+.grid-item {
+    width: 100%; /* Ajusta el ancho al 100% del contenedor */
+    text-align: center;
+    padding: 10px; /* Agrega un espacio de 10 píxeles alrededor del contenido */
+}
+
+.grid-item img {
+    max-width: 100%; /* Ajusta el ancho máximo al 100% del contenedor */
+    height: auto; /* Ajusta la altura de forma automática para mantener la relación de aspecto */
+}

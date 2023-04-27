@@ -1,0 +1,19 @@
+<app-navbar></app-navbar>
+
+<div class="col text-center">
+        
+  Id de administrador: <input  #idUser type="text" (input)="onIdClienteChanged(idUser.value)" class=" has-background-light" placeholder="ID"><br>
+</div>
+<div class="container mt-3">
+  <router-outlet></router-outlet>
+  <hr>
+  <div class="row">
+    <div class="col text-center">
+      <button class="btn btn-primary btn-rounded-corners add-button m-2" (click)="activarShowPokemons(idUser.value)">Mostrar Todos</button>
+      <app-add-pokemon (rstatus)="onrstatus($event)" (click)="desactivarMostrar()"></app-add-pokemon>
+      <app-get-pokemon (rstatus)="onrstatus($event)" (click)="desactivarMostrar()"></app-get-pokemon>
+    </div>
+  </div>
+  <hr>
+  <app-show-pokemon (rstatus)="onrstatus($event)" *ngIf="showPokemonVisible"></app-show-pokemon>
+  </div>

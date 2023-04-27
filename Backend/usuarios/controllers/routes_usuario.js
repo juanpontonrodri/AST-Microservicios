@@ -52,20 +52,27 @@ exports.findByrol = function(req, res) {
 };
 
 //GET usuario by id 
-Usuario.find({ _id:objectId }, function(err, usuarios) {
-  if (err) return res.send(500, err.message);
+exports.findByid = function(req, res) {
+  var id = req.params.id;
+  var objectId = ObjectId(id);
+  console.log(id);
+  console.log(objectId);
+	Usuario.find({ _id:objectId }, function(err, usuarios) {
+    if (err) return res.status(404).send({ message: "Usuario no encontrado" });
 
-  if (usuarios.length === 0) {
-    return res.status(404).send("Usuario no encontrado");
-  }
+    if (usuarios.length === 0) {
+      return res.status(404).send({ message: "Usuario no encontrado" });
+    }
 
-  const usuariorol = usuarios[0].rol;
-  console.log(usuariorol);
+    const usuariorol = usuarios[0].rol;
+    console.log(usuariorol);
 
-  console.log('GET /usuario/id/' + req.params.id);
-  
-  res.status(200).jsonp(usuariorol);
-});
+    console.log('GET /usuario/id/' + req.params.id);
+    
+		res.status(200).jsonp(usuariorol);
+	});
+};
+
 
 
   //DELETE usuario por id 
