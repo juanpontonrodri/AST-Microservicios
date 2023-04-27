@@ -1,25 +1,33 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClientModule} from "@angular/common/http";
-import { FormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
+import { HttpClientModule } from "@angular/common/http";
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PokemonViewComponent } from './pages/pokemon-view/pokemon-view.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ComponentsModule } from './components/components.module';
+import { PagesModule } from './pages/pages.module';
+import { PokemonService } from './services/pokemon.service';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    PokemonViewComponent
-
+    AppComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    MatSnackBarModule,
     AppRoutingModule,
-    FormsModule,
+    ComponentsModule,
+    PagesModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    PokemonService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

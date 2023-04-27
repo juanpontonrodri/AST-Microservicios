@@ -7,7 +7,7 @@ export default class Pokemon{
     generacion!: number;
     region!: string;
     tipo!:string;
-    evolucion!: boolean;
+    evolucion!: number;
     legendario!: boolean;
     cantidad!:number;
     precio!:number;

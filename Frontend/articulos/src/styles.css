@@ -1,8 +1,1 @@
 /* You can add global styles to this file, and also import other style files */
-@import "../node_modules/bootstrap-css/lib/alert.css" ;
-@import "../node_modules/bootstrap-css/lib/badge.css";
-@import "../node_modules/bootstrap-css/lib/breadcrumb.css";
-@import "../node_modules/bootstrap-css/lib/button-group.css";
-@import "../node_modules/bootstrap-css/lib/buttons.css";
-@import "../node_modules/bootstrap-css/lib/card.css";
-@import "./main.css";

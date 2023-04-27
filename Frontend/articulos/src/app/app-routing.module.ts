@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PokemonViewComponent } from './pages/pokemon-view/pokemon-view.component';
+import { HomeComponent } from './pages/home/home.component';
 
 const routes: Routes = [
-  {path: '' , component: PokemonViewComponent} ,
-  {path: 'pokemon' , component: PokemonViewComponent} 
-
-  
+  { path: 'home', component: HomeComponent },
+  { path: '**', pathMatch: 'full', redirectTo: 'home' }
 ];
 
 @NgModule({

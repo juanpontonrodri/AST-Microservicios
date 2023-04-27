@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "client": {
+    "frontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/client",
+            "outputPath": "dist/frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -57,29 +57,21 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "options": {
-            "port": 4200
-          },
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "client:build:production"
+              "browserTarget": "frontend:build:production"
             },
             "development": {
-              "browserTarget": "client:build:development"
-              
+              "browserTarget": "frontend:build:development"
             }
-          },
-          "options": {
-            "browserTarget":"your-application-name:build",
-            "proxyConfig": "src/proxy.conf.json"
           },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "client:build"
+            "browserTarget": "frontend:build"
           }
         },
         "test": {
@@ -102,8 +94,5 @@
         }
       }
     }
-  },
-  "cli": {
-    "analytics": "e79eb98e-a908-465d-ab24-0b032cec7e17"
   }
 }
