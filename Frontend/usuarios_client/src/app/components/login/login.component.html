@@ -1,14 +1,16 @@
-<mat-toolbar color="primary">
-  <span>Gestion Usuarios</span>
+
+<nav class="navbar navbar-light bg-light navbar-centered">
+  <a class="navbar-brand" href="#">
+      <img src="../../../assets/img/pokemon-trainer.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      Gestión Usuarios
+  </a>
   <span class="example-spacer"></span>
-  <button  mat-button class="btn btn-rounded-corners  btn-primary" (click)="showeliminate()">Eliminar</button>
-  <button  mat-button class="btn btn-rounded-corners  btn-primary" (click)="showconsulta()">Consulta</button>
-  <button  mat-button class="btn btn-rounded-corners  btn-primary" (click)="showcreate()">Create new user</button>
+  <button  mat-button class="btn btn-rounded-corners  btn-primary mt-3" (click)="showeliminate()">Eliminar</button>
+  <button  mat-button class="btn btn-rounded-corners  btn-primary mt-3" (click)="showconsulta()">Consulta usuarios</button>
+  <button  mat-button class="btn btn-rounded-corners  btn-primary mt-3" (click)="showcreate()">Crear nuevo usuario</button>
   <span class="example-spacer"></span>
-  <button mat-icon-button class="example-icon" routerLink="/" aria-label="Example icon-button with menu icon">
-    <mat-icon>logout</mat-icon>
-  </button>
-</mat-toolbar>
+</nav>
+
 
 
 <div class="body">
@@ -18,9 +20,8 @@
    
         
             <img src="../../../../assets/img/jigglypuff.png"  alt="" width="50%" height="50%">
-            <h1 class="h3 mb-3 fw-normal">Solo Administradores</h1>
+            <h1 class="h3 mb-3 fw-normal">Introduce tu ID de Administrador</h1>
            
-                <mat-label>id</mat-label>
                 <input   #userInput1 type="text" class="form-control has-background-light" placeholder="ID">
               <br>
               <mat-label>Rol</mat-label>
@@ -31,9 +32,9 @@
         <br><br><br>
 
               
-              <button  type = "submit" class="ancho" mat-raised-button mat-button color="primary"(click)="permitir(userInput1.value)">Search all</button>
+              <button  type = "submit" class="ancho" mat-raised-button mat-button color="primary"(click)="permitir(userInput1.value)">Buscar todos</button>
              <br> <br>
-              <button  type = "submit" class="ancho" mat-raised-button mat-button color="primary"(click)="rollist(userInput1.value,input2.value)">Search by rol</button>
+              <button  type = "submit" class="ancho" mat-raised-button mat-button color="primary"(click)="rollist(userInput1.value,input2.value)">Buscar por Rol</button>
             </div>
     
   </div>
@@ -52,7 +53,7 @@
           </mat-form-field><br>
 
           <mat-form-field class="ancho" appearance="fill">
-            <mat-label>Rol</mat-label>
+            <mat-label>Selecciona el Rol: </mat-label>
             <select  matNativeControl required formControlName ="rol">
               <option value="Administrador">Administrador</option>
               <option value="Cliente">Cliente</option>
@@ -67,14 +68,15 @@
 
 
 <div *ngIf="showeliminateflag">
-  <mat-toolbar>
-    <span>Darse baja</span>
-  </mat-toolbar>
+  <div class="text-center">
+  <h2>Darse de baja</h2>
+  </div>
+  <br>
   <br>
   <div class="login">
         <img src="../../../../assets/img/caterpie.png"  alt="" width="50%" height="50%">
             <br>
-          <mat-label>id</mat-label>
+          <mat-label>Introduce el ID del usuario a eliminar </mat-label>
           <input   #userInput2 type="text" class="form-control has-background-light" placeholder="ID">
         <br>
          <br>
@@ -89,36 +91,38 @@
 
 
 <div *ngIf="showconsultaresultflag">
-<div class="container mt-5">
-  <div class="row">
-      <div class="col-lg-8 offset-lg-2">
-          <div class="card">
-              <div class="card-body text-center">
-                <br>
-                  <table *ngIf="usuarios.length > 0" class="table table-striped mt-3">
-                      <thead>
-                        <tr>
-                          <th scope="col">Id</th>
-                          <th scope="col">Nombre</th>
-                          <th scope="col">Rol</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let usuario of usuarios ">
-                          <td>{{ usuario._id }}</td>
-                          <td>{{ usuario.nombre }}</td>
-                          <td>{{ usuario.rol }}</td>
-                         
-                        </tr>
-                      </tbody>
-                    </table>
-                    <h5 style="text-align: start; margin-top: 10px;" *ngIf="usuarios.length == 0">No hay usuarios para mostrar</h5>
-              </div>
+  
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col">
+        <div class="card centered">
+          <div class="card-body text-center">
+            <br>
+            <table *ngIf="usuarios.length > 0" class="table table-striped mt-3">
+              <thead>
+                <tr>
+                  <th scope="col">Id</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Rol</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let usuario of usuarios ">
+                  <td>{{ usuario._id }}</td>
+                  <td>{{ usuario.nombre }}</td>
+                  <td>{{ usuario.rol }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <h5 style="text-align: start; margin-top: 10px;" *ngIf="usuarios.length == 0">No hay usuarios para mostrar</h5>
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="ancho" mat-raised-button mat-button color="primary" (click)="cancellist()">Home</button>
+            </div>
           </div>
+        </div>
       </div>
+    </div>
   </div>
-</div>
-<button  type = "submit" class="ancho" mat-raised-button mat-button color="primary" (click)="cancellist()">Home</button>
-</div>
+  
 
 </div>

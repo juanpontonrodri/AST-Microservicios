@@ -69,3 +69,10 @@
 .ancho {
   width: 80%;
 }
+.navbar-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
