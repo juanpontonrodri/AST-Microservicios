@@ -74,7 +74,7 @@
             ID de Compra: {{item._id}} <br> ID del artículo: {{item.idArticulo}} <br> ID del cliente: {{item.idCliente}} <br> Cantidad: {{item.cantidad}} <br> Nombre: {{item.nombre}} <br> Dirección de envío: {{item.direccionEnvio}}
             </div>
         </ng-template>
-        <button class="btn btn-primary btn-rounded-corners m-2" (click)="eliminarcompra(item._id,item.idArticulo,item.cantidad)" >
+        <button class="btn btn-primary btn-rounded-corners m-2" (click)="eliminarcompra(item.idCliente,item._id,item.idArticulo,item.cantidad)" >
             Eliminar Compra
         </button>
         <button class="btn btn-primary btn-rounded-corners m-2"(click)="modify(item)" >

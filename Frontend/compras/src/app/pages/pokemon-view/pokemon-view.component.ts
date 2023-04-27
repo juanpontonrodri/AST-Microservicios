@@ -90,9 +90,9 @@ getcomprabynombre(id: string, nombre: string){
   });
 }
 
-/* 
-eliminarcompra(id:string, id_pokemon : string , cantidad : number){
-  this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
+
+eliminarcompra(id_cliente:string,id:string, id_pokemon : string , cantidad : number){
+  this.checkUserRole(id_cliente, ['Cliente']).subscribe(hasAccess => {
     if (hasAccess) {
       this.showlistacompra=false;
       this.CompraService.putsumarCantidad(id_pokemon,cantidad).subscribe(response => {
@@ -116,8 +116,8 @@ eliminarcompra(id:string, id_pokemon : string , cantidad : number){
       });
     }
   });
-} */
-
+} 
+/* 
 eliminarcompra(id:string, id_pokemon : string , cantidad : number){
   this.showlistacompra=false;
   this.CompraService.putsumarCantidad(id_pokemon,cantidad).subscribe(response => {
@@ -141,7 +141,7 @@ eliminarcompra(id:string, id_pokemon : string , cantidad : number){
       
     }
   });
-}
+} */
 
 
 
@@ -305,7 +305,7 @@ bien(usuarioID: string){
   })
 }
 bien2(){
-  this._snackBar.open("the operation was successful ",'',{
+  this._snackBar.open("Operación realizada correctamente",'',{
     duration:7000,
     horizontalPosition:'center',
   })
