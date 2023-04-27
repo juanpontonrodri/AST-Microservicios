@@ -4,6 +4,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import Pokemon from 'src/app/models/pokemon';
 import {CompraService } from 'src/app/compra.service'
 import Compra from 'src/app/models/compra';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs/internal/Observable';
+
 interface UsuarioResponse {
   result: string;
 }
@@ -40,84 +43,83 @@ ngOnInit() {
   .subscribe((pokemons: any)=> this.pokemons = pokemons);
 }
 
-eliminarcompra(id:string, id_pokemon : string , cantidad : number){
-  this.showlistacompra=false;
-  this.CompraService.putsumarCantidad(id_pokemon,cantidad).subscribe(response => {
-    if (response.status == 200) {
-      console.log("dadded true")
-      this.rstatus.emit(true);   
-    } else {
-      console.log("added true")
-      this.rstatus.emit(false);  
-    }
-  });
-  this.CompraService.deleteCompra(id).subscribe(response => {
-    if (response.status == 200) {
-      this.bien2();
-      console.log("dadded true")
-      this.rstatus.emit(true);
-      
-    } else {
-      console.log("added true")
-      this.rstatus.emit(false);
-      
-    }
-  });
+checkUserRole(id: string, allowedRoles: string[]): Observable<boolean> {
+  return this.CompraService.getuserrol(id).pipe(
+    map((data: any) => {
+      const userRole = data.toString();
+      console.log(userRole);
+      if (allowedRoles.includes(userRole)) {
+        console.log("you have access");
+        return true;
+      } else {
+        console.log("you better get out of here");
+        return false;
+      }
+    })
+  );
 }
 
+
 getcompra(id: string){
-  this.CompraService.getuserrol(id).subscribe(data => {
-    this.usuariorol = data.toString();
-    console.log(this.usuariorol);
-    if (this.usuariorol === 'Cliente') {
+  this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
+    if (hasAccess) {
       this.CompraService.getCompraByIDCliente(id).subscribe((compras: any)=> this.compras = compras);
       this.showlistacompra=true;
       this.showpokemonflag=false;
-      console.log("you have access");
-    } else {
-      console.log("you better get out of here");
     }
   });
 }
-getcomprabyID(id: string ,id_compra : string){
 
-  this.CompraService.getuserrol(id).subscribe(data => {
-    this.usuariorol = data.toString();
-    console.log(this.usuariorol);
-    if (this.usuariorol === 'Cliente') {
+getcomprabyID(id: string ,id_compra : string){
+  this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
+    if (hasAccess) {
       this.CompraService.getCompraByID(id_compra).subscribe((compras: any)=> this.compras = compras);
       this.showlistacompra=true;
       this.showpokemonflag=false;
-      
-      console.log("you have access");
-      //this.bien3();
-     
-    } else {
-      console.log("you better get out of here");
-     // this.error();
     }
   });
-  
 }
 
 getcomprabynombre(id: string, nombre: string){
-  this.CompraService.getuserrol(id).subscribe(data => {
-    this.usuariorol = data.toString();
-    console.log(this.usuariorol);
-    if (this.usuariorol === 'Cliente') {
+  this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
+    if (hasAccess) {
       this.CompraService.getCompraByIDClienteYNombre(id,nombre).subscribe((compras: any)=> this.compras = compras);
       this.showlistacompra=true;
       this.showpokemonflag=false;
-      
-      console.log("you have access");
-      //this.bien3();
-     
-    } else {
-      console.log("you better get out of here");
-     // this.error();
     }
   });
 }
+
+
+eliminarcompra(id:string, id_pokemon : string , cantidad : number){
+  this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
+    if (hasAccess) {
+      this.showlistacompra=false;
+      this.CompraService.putsumarCantidad(id_pokemon,cantidad).subscribe(response => {
+        if (response.status == 200) {
+          console.log("dadded true")
+          this.rstatus.emit(true);   
+        } else {
+          console.log("added true")
+          this.rstatus.emit(false);  
+        }
+      });
+      this.CompraService.deleteCompra(id).subscribe(response => {
+        if (response.status == 200) {
+          this.bien2();
+          console.log("dadded true")
+          this.rstatus.emit(true);
+        } else {
+          console.log("added true")
+          this.rstatus.emit(false);
+        }
+      });
+    }
+  });
+}
+
+
+
 
 
 
@@ -139,18 +141,16 @@ getByID(id: string) { //para pokemons
         return false;
   }
 }
-
 activarShowpokemons(id: string) {
-  this.CompraService.getuserrol(id).subscribe(data => {
-    this.usuariorol = data.toString();
-    console.log(this.usuariorol);
-    if (this.usuariorol === 'Cliente') {
+  this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
+    if (hasAccess) {
       this.ngOnInit();
       if(this.showpokemonflag==false){
-      this.showlistacompra=false;
-      
-      this.showpokemonflag=true;}
-      else{this.showpokemonflag=false;}
+        this.showlistacompra=false;
+        this.showpokemonflag=true;
+      } else {
+        this.showpokemonflag=false;
+      }
       console.log("you have access");
     } else {
       console.log("you better get out of here");
@@ -158,11 +158,9 @@ activarShowpokemons(id: string) {
   });
 }
 
-activarShowpokemonsnombre(id: string,nombre : string) {
-  this.CompraService.getuserrol(id).subscribe(data => {
-    this.usuariorol = data.toString();
-    console.log(this.usuariorol);
-    if (this.usuariorol === 'Cliente') {
+activarShowpokemonsnombre(id: string,nombre : string) { 
+  this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
+    if (hasAccess) {
       this.getByName(nombre);
       this.showpokemonflag=true;
       console.log("you have access");
@@ -172,13 +170,10 @@ activarShowpokemonsnombre(id: string,nombre : string) {
   });
 }
 
-
 activarShowpokemonsID(id: string, idpokemon : string) { 
-  this.CompraService.getuserrol(id).subscribe(data => {
-    this.usuariorol = data.toString();
-    this.getByID(idpokemon);
-    console.log(this.usuariorol);
-    if (this.usuariorol === 'Cliente') { 
+  this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
+    if (hasAccess) {
+      this.getByID(idpokemon);
       this.showpokemonflag=true;
       this.showlistacompra=false;
       console.log("you have access");
@@ -187,7 +182,6 @@ activarShowpokemonsID(id: string, idpokemon : string) {
     }
   });
 }
-
 
 showcompraformulario(idCliente: string, idPokemon: any, cantidadPokemon: any, pokemon : Pokemon) {
   this.pokemonSeleccionado = pokemon;
@@ -209,51 +203,46 @@ cancelform(){
   this.showpokemonflag=false;
   
 }
-
 addCompra(id:string ,idArticulo: string, idCliente: string, cantidad: number, nombre: string, direccionEnvio: string) {
-  this.CompraService.getuserrol(id).subscribe(data => {
-    this.usuariorol = data.toString();
-    
-    
-    if (this.usuariorol === 'Cliente') { 
+  this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
+    if (hasAccess) {
       this.showcompraform = false;
-  if (cantidad > this.cantidadPokemon || cantidad < 0 || cantidad == null) {
-    console.log("compra imposible")
-    this.rstatus.emit(false);
-  } else {
-    this.pokemonSeleccionado.cantidad = this.cantidadPokemon - cantidad;
-    console.log("new quantity:"+this.pokemonSeleccionado.cantidad);
-    this.CompraService.putrestarCantidad(this.idPokemon, this.pokemonSeleccionado).subscribe(response => {
-      if (response.status == 200) {
-        console.log("dadded true")
-        this.rstatus.emit(true);   
-      } else {
-        console.log("added true")
-        this.rstatus.emit(false);  
-      }
-    });
-    this.CompraService.createCompra(idArticulo, idCliente, cantidad, nombre, direccionEnvio)
-    .subscribe(response => {
-      if (response.status == 200) {
-        const compraID = (response.body as UsuarioResponse).result;
-        this.bien(compraID)
-        console.log("dadded true")
-        this.rstatus.emit(true);
-        
-      } else {
-        console.log("added true")
+      if (cantidad > this.cantidadPokemon || cantidad < 0 || cantidad == null) {
+        console.log("compra imposible")
         this.rstatus.emit(false);
-        
+      } else {
+        this.pokemonSeleccionado.cantidad = this.cantidadPokemon - cantidad;
+        console.log("new quantity:"+this.pokemonSeleccionado.cantidad);
+        this.CompraService.putrestarCantidad(this.idPokemon, this.pokemonSeleccionado).subscribe(response => {
+          if (response.status == 200) {
+            console.log("dadded true")
+            this.rstatus.emit(true);   
+          } else {
+            console.log("added true")
+            this.rstatus.emit(false);  
+          }
+        });
+        this.CompraService.createCompra(idArticulo, idCliente, cantidad, nombre, direccionEnvio)
+          .subscribe(response => {
+            if (response.status == 200) {
+              const compraID = (response.body as UsuarioResponse).result;
+              this.bien(compraID)
+              console.log("dadded true")
+              this.rstatus.emit(true);
+            } else {
+              console.log("added true")
+              this.rstatus.emit(false);
+            }
+          });
       }
-    });
-  }
       console.log("you have access");
     } else {
       console.log("you better get out of here");
     }
   });
- 
 }
+
+
 modify(compra: Compra) {
   this.compraSeleccionada = compra;
   this.showmodifyflag = true;
@@ -261,30 +250,28 @@ modify(compra: Compra) {
   this.showcompraform=false;
   this.showpokemonflag=false
 }
-
 modifyCompra(_id: string, idArticulo: string, idCliente: string, cantidad: number, nombre: string, direccionEnvio: string) {
   this.showmodifyflag = false;
-  this.CompraService.getuserrol(idCliente).subscribe(data => {
-    this.usuariorol = data.toString();
-    console.log(this.usuariorol);
-    if (this.usuariorol === 'Cliente') {
+  this.checkUserRole(idCliente, ['Cliente']).subscribe(hasAccess => {
+    if (hasAccess) {
       this.CompraService.putCompra(_id, idArticulo, idCliente, cantidad, nombre, direccionEnvio)
-    .subscribe(response => {
-      if (response.status == 200) {
-        console.log("event true")
-        this.rstatus.emit(true);
-        this.bien2();
-      } else {
-        console.log("event true")
-        this.rstatus.emit(false);
-      }
-    });
+      .subscribe(response => {
+        if (response.status == 200) {
+          console.log("event true")
+          this.rstatus.emit(true);
+          this.bien2();
+        } else {
+          console.log("event true")
+          this.rstatus.emit(false);
+        }
+      });
+      console.log("you have access");
     } else {
       console.log("you better get out of here");
     }
   });
- 
 }
+
 
 bien(usuarioID: string){
   this._snackBar.open("Compra creada correctamente con ID : "+ usuarioID,'',{
