@@ -90,7 +90,7 @@ getcomprabynombre(id: string, nombre: string){
   });
 }
 
-
+/* 
 eliminarcompra(id:string, id_pokemon : string , cantidad : number){
   this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
     if (hasAccess) {
@@ -114,6 +114,31 @@ eliminarcompra(id:string, id_pokemon : string , cantidad : number){
           this.rstatus.emit(false);
         }
       });
+    }
+  });
+} */
+
+eliminarcompra(id:string, id_pokemon : string , cantidad : number){
+  this.showlistacompra=false;
+  this.CompraService.putsumarCantidad(id_pokemon,cantidad).subscribe(response => {
+    if (response.status == 200) {
+      console.log("dadded true")
+      this.rstatus.emit(true);   
+    } else {
+      console.log("added true")
+      this.rstatus.emit(false);  
+    }
+  });
+  this.CompraService.deleteCompra(id).subscribe(response => {
+    if (response.status == 200) {
+      this.bien2();
+      console.log("dadded true")
+      this.rstatus.emit(true);
+      
+    } else {
+      console.log("added true")
+      this.rstatus.emit(false);
+      
     }
   });
 }
