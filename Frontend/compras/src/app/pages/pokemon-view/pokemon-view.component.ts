@@ -235,16 +235,23 @@ activarShowpokemonsID(id: string, idpokemon : string) {
 }
 
 showcompraformulario(idCliente: string, idPokemon: any, cantidadPokemon: any, pokemon : Pokemon) {
-  this.pokemonSeleccionado = pokemon;
-  this.idCliente=idCliente;
-  this.idPokemon = idPokemon;
-  this.cantidadPokemon = cantidadPokemon;
-  this.pokemons=[]//testearlo
-  if (this.showcompraform == false) {
-    this.showpokemonflag = false;
-    this.showcompraform = true;
-    this.showlistacompra=false;
-  } else this.showcompraform = false
+  this.checkUserRole(idCliente, ['Cliente']).subscribe(hasAccess => {
+    if (hasAccess) {
+  
+    this.pokemonSeleccionado = pokemon;
+    this.idCliente=idCliente;
+    this.idPokemon = idPokemon;
+    this.cantidadPokemon = cantidadPokemon;
+    this.pokemons=[]//testearlo
+    if (this.showcompraform == false) {
+      this.showpokemonflag = false;
+      this.showcompraform = true;
+      this.showlistacompra=false;
+    } else this.showcompraform = false
+  }else{
+    console.log("you better get out of here");
+  }
+  });
 }
 
 cancelform(){
