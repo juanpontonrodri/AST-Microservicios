@@ -211,9 +211,10 @@ activarShowpokemons(id: string) {
 activarShowpokemonsnombre(id: string,nombre : string) { 
   this.checkUserRole(id, ['Cliente']).subscribe(hasAccess => {
     if (hasAccess) {
+      this.getByName(nombre);
       this.showlistacompra=false;
         this.showpokemonflag=true;
-      console.log("you have access");
+      console.log("show pokemon por nombre");
     } else {
       console.log("you better get out of here");
     }
@@ -313,7 +314,8 @@ modify(id_usuario:string, compra: Compra) {
     else{
       this._snackBar.open("Esta no es tu compra",'',{
         duration:4000,
-        horizontalPosition:'center',
+        horizontalPosition: 'center',
+              verticalPosition: 'top'
       })
     }
   });
@@ -339,7 +341,8 @@ modifyCompra(id_usuario:string, _id: string, idArticulo: string, idCliente: stri
     } else {
       this._snackBar.open("Esta no es tu compra",'',{
         duration:4000,
-        horizontalPosition:'center',
+        horizontalPosition: 'center',
+              verticalPosition: 'top'
       })
     }
   });
@@ -349,13 +352,15 @@ modifyCompra(id_usuario:string, _id: string, idArticulo: string, idCliente: stri
 bien(usuarioID: string){
   this._snackBar.open("Compra creada correctamente con ID : "+ usuarioID,'',{
     duration:7000,
-    horizontalPosition:'center',
+    horizontalPosition: 'center',
+              verticalPosition: 'top'
   })
 }
 bien2(){
   this._snackBar.open("Operación realizada correctamente",'',{
     duration:7000,
-    horizontalPosition:'center',
+    horizontalPosition: 'center',
+              verticalPosition: 'top'
   })
 }
 

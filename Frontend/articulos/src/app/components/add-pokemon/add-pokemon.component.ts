@@ -45,12 +45,22 @@ checkUserRole(id: string, allowedRoles: string[]): Observable<boolean> {
   );
 }
 showform() {
-  if (this.showformflag == false) {
-    this.showformflag = true;
-    
-  } else {
-    this.showformflag = false
-  }
+  this.checkUserRole(this.idUser, ['Administrador']).subscribe(hasAccess => {
+    if (hasAccess) {
+      if (this.showformflag == false) {
+        this.showformflag = true;
+        
+      } else {
+        this.showformflag = false
+      }
+    } else {
+      this._snackBar.open("No tienes permisos para agregar un pokemon", '', {
+        duration: 4000,
+        horizontalPosition: 'center',
+              verticalPosition: 'top'
+      });
+    }
+  });
 }
 
 cancelform() {
@@ -58,21 +68,32 @@ cancelform() {
   
 }
 addPokemon(nombre: string, numero: number, generacion: number, region: string, tipo: string, evolucion: boolean, legendario: boolean, cantidad: number, precio: number) {
-  this.showformflag = false;
-  this.PokemonService.createPokemon(nombre, numero, generacion, region, tipo, evolucion, legendario, cantidad, precio)
-    .subscribe(response => {
-      if (response.status == 200) {
-        console.log("dadded true")
-        this.rstatus.emit(true);
-        this._snackBar.open("Nuevo pokemon agregado", '', {
-          duration: 4000,
-          horizontalPosition: 'center'
-        });
-      } else {
-        console.log("added true")
-        this.rstatus.emit(false);
-      }
-    });
+  this.checkUserRole(this.idUser, ['Administrador']).subscribe(hasAccess => {
+    if (hasAccess) {
+      this.showformflag = false;
+      this.PokemonService.createPokemon(nombre, numero, generacion, region, tipo, evolucion, legendario, cantidad, precio)
+        .subscribe(response => {
+          if (response.status == 200) {
+            console.log("dadded true")
+            this.rstatus.emit(true);
+            this._snackBar.open("Nuevo pokemon agregado", '', {
+              duration: 4000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top'
+            });
+          } else {
+            console.log("added true")
+            this.rstatus.emit(false);
+          }
+        });}
+        else {
+          this._snackBar.open("No tienes permisos para agregar un pokemon", '', {
+            duration: 4000,
+            horizontalPosition: 'center',
+              verticalPosition: 'top'
+          });
+        }
+      });
 }
 
   getBoolean(value: string) {

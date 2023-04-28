@@ -54,6 +54,7 @@ export class AppComponent {
   }
 
   desactivarMostrar(){
+    
     this.showPokemonVisible=false;
   }
 

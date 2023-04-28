@@ -69,7 +69,8 @@ getByName(name: string) {
     } else {
       this._snackBar.open("No tienes permisos para buscar pokemons", '', {
         duration: 4000,
-        horizontalPosition: 'center'
+        horizontalPosition: 'center',
+              verticalPosition: 'top'
       });
     }
   });
@@ -136,7 +137,8 @@ getByName(name: string) {
             this.rstatus.emit(true);
             this._snackBar.open("Pokémon eliminado correctamente", '', {
               duration: 4000,
-              horizontalPosition: 'center'
+              horizontalPosition: 'center',
+              verticalPosition: 'top'
             });
           } else {
             console.log("deleted true")
@@ -146,13 +148,15 @@ getByName(name: string) {
           console.error(error);
           this._snackBar.open("Error al eliminar el pokemon", '', {
             duration: 4000,
-            horizontalPosition: 'center'
+            horizontalPosition: 'center',
+              verticalPosition: 'top'
           });
         });
       } else {
         this._snackBar.open("No tienes permisos para eliminar el pokemon", '', {
           duration: 4000,
-          horizontalPosition: 'center'
+          horizontalPosition: 'center',
+              verticalPosition: 'top'
         });
       }
     });
@@ -168,7 +172,8 @@ getByName(name: string) {
       } else {
         this._snackBar.open("No tienes permisos para modificar el pokemon", '', {
           duration: 4000,
-          horizontalPosition: 'center'
+          horizontalPosition: 'center',
+              verticalPosition: 'top'
         });
       }
     });
@@ -185,7 +190,8 @@ getByName(name: string) {
               console.log("event true")
               this._snackBar.open("Pokémon modificado correctamente", '', {
                 duration: 4000,
-                horizontalPosition: 'center'
+                horizontalPosition: 'center',
+              verticalPosition: 'top'
               });
               this.rstatus.emit(true);
             } else {
@@ -196,13 +202,15 @@ getByName(name: string) {
             console.error(error);
             this._snackBar.open("Error al modificar el pokemon", '', {
               duration: 4000,
-              horizontalPosition: 'center'
+              horizontalPosition: 'center',
+              verticalPosition: 'top'
             });
           });
         } else {
           this._snackBar.open("No tienes permisos para modificar el pokemon", '', {
             duration: 4000,
-            horizontalPosition: 'center'
+            horizontalPosition: 'center',
+              verticalPosition: 'top'
           });
         }
       });
